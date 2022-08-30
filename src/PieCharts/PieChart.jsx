@@ -11,13 +11,13 @@ const PieChart = () => {
   const centerX = width / 2
   const centerY = height / 2
 
-  const messsage = (data) => {
-    let message = ""
-    message = message + Math.round(d3.csvFormat(data).length / 1024) + " KB "
-    message = message + data.length + " rows "
-    message = message + data.columns.length + ` columns`
-    return message
-  }
+  // const messsage = (data) => {
+  //   let message = ""
+  //   message = message + Math.round(d3.csvFormat(data).length / 1024) + " KB "
+  //   message = message + data.length + " rows "
+  //   message = message + data.columns.length + ` columns`
+  //   return message
+  // }
 
   const pieArc = d3.arc().innerRadius(0).outerRadius(width)
 
