@@ -3,6 +3,7 @@ import React from "react"
 export const AxisLeft = ({ yScale }) => {
   return yScale.domain().map((tickValue) => (
     <g
+      className="tick-left"
       transform={`translate(0, ${yScale(tickValue) + yScale.bandwidth() / 2})`}
       key={tickValue}
     >

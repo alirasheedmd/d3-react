@@ -4,7 +4,7 @@ import * as d3 from "d3"
 const csvUrl =
   "https://gist.githubusercontent.com/curran/b236990081a24761f7000567094914e0/raw/cssNamedColors.csv"
 
-const LoadData = () => {
+const PieChart = () => {
   const [data, setData] = useState(null)
   const width = 960
   const height = 500
@@ -52,4 +52,4 @@ const LoadData = () => {
   )
 }
 
-export default LoadData
+export default PieChart
