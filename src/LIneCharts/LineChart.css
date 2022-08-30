@@ -1,19 +1,6 @@
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+.tick-left line {
+  stroke: #ccc;
 }
-
-.x.axis path {
-}
-
-.line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 1.5px;
-}
-
-#chart {
-  transform: translate(50px, 50px);
+.tick-left text {
+  fill: #635f5d;
 }

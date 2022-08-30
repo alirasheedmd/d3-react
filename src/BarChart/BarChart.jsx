@@ -1,8 +1,8 @@
 import React from "react"
 import { scaleBand, scaleLinear, max, format } from "d3"
 import { useData } from "./useData"
-import { AxisBottom } from "../Common/AxisBottom"
-import { AxisLeft } from "../Common/AsixLeft"
+import { AxisBottom } from "./AxisBottom"
+import { AxisLeft } from "./AsixLeft"
 import Marks from "./Marks"
 
 const BarChart = () => {

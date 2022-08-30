@@ -1,6 +1,9 @@
-import { useRef } from "react"
-
+import { extent, scaleLinear, scaleTime, timeFormat } from "d3"
+import { AxisBottom } from "./AxisBottom"
+import { AxisLeft } from "./AxisLeft"
+import { useData } from "./userData"
 import "./LineChart.css"
+import { Marks } from "./Marsks"
 
 var LineChart = () => {
   const width = 960
@@ -13,7 +16,46 @@ var LineChart = () => {
 
   const xAxisLabelOffset = 40
 
-  return <div></div>
+  const xAxisTickFormat = timeFormat("%m/%y")
+
+  const yValue = (d) => d.price
+  const xValue = (d) => d.date
+
+  const data = useData()
+
+  const yScale =
+    data && scaleLinear().domain(data.map(yValue)).range([innerHeight, 0])
+
+  const xScale =
+    data &&
+    scaleTime().domain(extent(data, xValue)).range([0, innerWidth]).nice()
+
+  if (data) {
+    return (
+      <svg width={width} height={height} className="line-chart">
+        <g transform={`translate(${margin.left}, ${margin.top})`}>
+          <AxisLeft yScale={yScale} innerWidth={innerWidth} />
+          <AxisBottom
+            xScale={xScale}
+            innerHeight={innerHeight}
+            tickFormat={xAxisTickFormat}
+            xAxisLabelOffset={xAxisLabelOffset}
+          />
+          <Marks
+            data={data}
+            xScale={xScale}
+            yScale={yScale}
+            xValue={xValue}
+            yValue={yValue}
+            tooltipFormat={xAxisTickFormat}
+            circleRadius={7}
+          />
+        </g>
+      </svg>
+    )
+  } else {
+    return <div>"Loading..."</div>
+  }
 }
 
 export default LineChart
