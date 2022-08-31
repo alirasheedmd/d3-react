@@ -14,6 +14,7 @@ export const useData = () => {
       })
       setData(data)
     })
+    // eslint-disable-next-line
   }, [])
   return data
 }
