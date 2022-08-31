@@ -13,7 +13,6 @@ export const useData = () => {
         d.price = +d["Hyundai Elentra 2007"]
       })
       setData(data)
-      console.log(data)
     })
   }, [])
   return data
