@@ -24,7 +24,7 @@ var LineChart = () => {
   const [mousePosition, setMousePosition] = useState(initialMousePosition)
   const [opacity, setOpacity] = useState(0)
 
-  const margin = { top: 20, right: 20, bottom: 50, left: 100 }
+  const margin = { top: 40, right: 20, bottom: 50, left: 100 }
 
   const innerWidth = width - margin.left - margin.right
   const innerHeight = height - margin.top - margin.bottom
@@ -34,13 +34,11 @@ var LineChart = () => {
   const xAxisLabelOffset = 40
 
   const xAxisTickFormat = timeFormat("%m/%y")
-  const siFormater = format("")
+  const siFormater = format(".3s")
   const yAxisTickFormat = (n) => "$" + siFormater(n)
 
   const yValue = (d) => d.price
   const xValue = (d) => d.date
-
-  let pos
 
   const data = useData()
 
@@ -63,32 +61,14 @@ var LineChart = () => {
     [setMousePosition]
   )
 
-  const traslate = (d, i) => {
+  const traslate = (d) => {
     let xDate = xScale.invert(mousePosition.x),
       bisect = bisector(function (d) {
-        return xScale(xValue(d))
+        return d.date
       }).right
-    bisect(d, xDate)
+    const i = bisect(d, xDate)
 
-    let beginning = 0,
-      end = line.getTotalLength(),
-      target = null
-
-    while (true) {
-      target = Math.floor((beginning + end) / 2)
-      pos = line.getPointAtLength(target)
-      if (
-        (target === end || target === beginning) &&
-        pos.x !== mousePosition.x
-      ) {
-        break
-      }
-      if (pos.x > mousePosition.x) end = target
-      else if (pos.x < mousePosition.x) beginning = target
-      else break //position found
-    }
-
-    return `translate(${mousePosition.x + margin.left}, ${pos.y})`
+    return { x: xScale(data[i].date) + margin.left, y: yScale(data[i].price) }
   }
 
   if (data) {
@@ -130,23 +110,35 @@ var LineChart = () => {
             onMouseMove={handleMouseMove}
           />
         </g>
-        {line && (
-          <circle
-            r={5}
-            fill="#1f77b4"
-            opacity={opacity}
-            cy={margin.top}
-            transform={traslate(data, 0)}
-          />
-        )}
         <line
-          stroke="#000000"
           opacity={opacity}
-          x1={mousePosition.x + margin.left}
+          x1={traslate(data, 0).x}
           y1={margin.top}
-          x2={mousePosition.x + margin.left}
+          z1={-1}
+          x2={traslate(data, 0).x}
           y2={innerHeight + margin.top}
+          className="vertical-line"
         />
+        {line && (
+          <>
+            <circle
+              r={5}
+              fill="#1f77b4"
+              opacity={opacity}
+              cy={margin.top}
+              transform={`translate(${traslate(data, 0).x}, ${
+                traslate(data, 0).y
+              })`}
+            ></circle>
+            <text
+              opacity={opacity}
+              x={traslate(data, 0).x - 30}
+              y={traslate(data, 0).y + 20}
+            >
+              {yAxisTickFormat(yScale.invert(traslate(data, 0).y))}
+            </text>
+          </>
+        )}
       </svg>
     )
   } else {

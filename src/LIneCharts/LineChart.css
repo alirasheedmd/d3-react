@@ -4,3 +4,8 @@
 .tick-left text {
   fill: #635f5d;
 }
+.vertical-line {
+  stroke: #ccc;
+  stroke-width: 1px;
+  stroke-dasharray: 5, 5;
+}
